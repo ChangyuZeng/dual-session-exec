@@ -1,0 +1,4 @@
+interface:
+  display_name: "双会话执行"
+  short_description: "主子会话分别选择模型和思考强度，分阶段执行并独立验收"
+  default_prompt: "使用 $dual-session-exec 执行已批准计划，分别核对主子会话的模型与思考强度，由子会话实现和自测、主会话独立验收。"

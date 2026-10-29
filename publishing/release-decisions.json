@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "confirmed_on": "2026-10-28",
+  "confirmation_source": "Direct user instruction in the current conversation",
+  "author": "双会话工坊（Dual Session Workshop）",
+  "license": "MIT",
+  "license_scope": "Project skill instructions, references, scripts and original publication materials",
+  "pricing": {
+    "mode": "free",
+    "edition": "1.0 base",
+    "price": 0,
+    "subscription": false,
+    "model_or_client_costs_included": false,
+    "custom_services_included": false
+  },
+  "maintenance": {
+    "mode": "best_effort",
+    "fixed_response_deadline": null,
+    "lifetime_updates_promised": false
+  },
+  "authorization": {
+    "prepare_packages_and_materials": true,
+    "submit_review": false,
+    "publish": false
+  },
+  "platform_pricing_applied": false
+}

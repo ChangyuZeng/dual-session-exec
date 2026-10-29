@@ -1,0 +1,20 @@
+{
+  "name": "dual-session-exec",
+  "display_name": "双会话执行 · 模型自由分工",
+  "display_name_en": "Dual Session Exec",
+  "description": "按已批准计划进行双会话执行与恢复：前台执行者实现、自测和交接，主会话协调、有限返工并独立验收。模型与强度控制取决于宿主能力。",
+  "description_zh": "使用一个前台执行者实现和自测已批准计划，由主会话协调与独立验收。已在 WorkBuddy 5.8.3 macOS 限定实测；当前工具无独立思考强度字段，真实后端型号未确认，命名后台路径未通过。",
+  "description_en": "One foreground executor implements and self-tests an approved plan; the main session coordinates and reviews independently. Scoped tests passed on WorkBuddy 5.8.3 macOS. Its tested tools lack independent reasoning controls, actual backend models remain unknown, and the named background path did not pass.",
+  "version": "1.0.0",
+  "author": "双会话工坊（Dual Session Workshop）",
+  "examples_zh": [
+    "仅验证本技能的安装和调用：实际读取导入目录和新版参考文件，运行配置助手 --help 并保留退出码，不启动执行者。",
+    "执行我已批准的修复计划：主侧沿用界面配置，列出当前可用子侧模型后选择一个前台执行者。无独立强度字段则如实记录，自测后交回主侧独立验收。",
+    "继续原运行和原前台执行者，对主侧已复现且根因明确的问题做同身份唯一一次返工；保留原预算、失败证据及最终独立验收。"
+  ],
+  "examples_en": [
+    "Verify this skill's installation and loading only: read the installed references, run the configuration helper with --help, and preserve the exit code. Do not start an executor.",
+    "Execute my approved fix plan. Keep the main session settings, show available executor models, and use one foreground executor. Record missing reasoning controls honestly and return self-test evidence for independent review.",
+    "Continue the original run and foreground executor for one bounded retry of a reproduced issue with a clear local fix. Preserve the budget, failure evidence, and final independent acceptance."
+  ]
+}
