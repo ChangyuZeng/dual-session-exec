@@ -1,0 +1,13 @@
+id	arxiv	version	title
+P01	2210.03629	v3	ReAct: Synergizing Reasoning and Acting in Language Models
+P02	2302.04761	v1	Toolformer: Language Models Can Teach Themselves to Use Tools
+P03	2303.11366	v4	Reflexion: Language Agents with Verbal Reinforcement Learning
+P04	2303.17580	v4	HuggingGPT: Solving AI Tasks with ChatGPT and its Friends in Hugging Face
+P05	2305.15334	v1	Gorilla: Large Language Model Connected with Massive APIs
+P06	2307.16789	v2	ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world APIs
+P07	2305.16291	v2	Voyager: An Open-Ended Embodied Agent with Large Language Models
+P08	2304.03442	v2	Generative Agents: Interactive Simulacra of Human Behavior
+P09	2308.08155	v2	AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation
+P10	2405.15793	v3	SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering
+P11	2308.03688	v3	AgentBench: Evaluating LLMs as Agents
+P12	2307.13854	v4	WebArena: A Realistic Web Environment for Building Autonomous Agents

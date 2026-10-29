@@ -1,0 +1,1 @@
+run_id,arm,side,session_id,requested_model,requested_effort,observed_model,observed_effort,input_tokens,cached_input_tokens,output_tokens,reasoning_output_tokens,total_tokens,turns,wall_seconds,rework_count,acceptance_score
