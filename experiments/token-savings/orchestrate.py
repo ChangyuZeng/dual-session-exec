@@ -15,10 +15,10 @@ def codex(side, model, prompt):
     n = len(state["turns"]) + 1; tag = f"{n:02d}-{side}"
     last = out/"turns"/f"{tag}.last.txt"
     base = ["-m", model[0], "-c", f'model_reasoning_effort="{model[1]}"', "-c", 'approval_policy="never"',
-            "-s", "workspace-write", "-c", "sandbox_workspace_write.network_access=true",
+            "-c", 'sandbox_mode="workspace-write"', "-c", "sandbox_workspace_write.network_access=true",
             "--skip-git-repo-check", "--json", "-o", str(last)]
     sid = state["sessions"].get(side)
-    cmd = ["codex", "exec"] + (["resume", sid] if sid else []) + base + ([] if sid else ["-C", str(REPO)]) + ["-"]
+    cmd = (["codex", "exec", "resume"] + base + [sid, "-"]) if sid else (["codex", "exec"] + base + ["-C", str(REPO), "-"])
     for attempt in range(3):
         t0 = time.time()
         p = subprocess.run(cmd, input=prompt, text=True, capture_output=True)
