@@ -6,7 +6,8 @@ set -e
 REPO="https://github.com/ChangyuZeng/dual-session-exec"
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
-curl -fsSL "$REPO/archive/refs/heads/main.tar.gz" | tar -xz -C "$TMP"
+curl -fsSL --retry 3 -o "$TMP/src.tar.gz" "$REPO/archive/refs/heads/main.tar.gz" || { echo "download failed" >&2; exit 1; }
+tar -xzf "$TMP/src.tar.gz" -C "$TMP"
 SRC="$TMP/dual-session-exec-main/dual-session-exec"
 
 if [ -n "$DSE_DIR" ]; then
