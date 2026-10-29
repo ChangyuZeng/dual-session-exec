@@ -75,7 +75,7 @@ def build(out, author=None, market_draft=False):
               "market_metadata_complete": False, "missing_market_metadata": ["author"] if author is None else [],
               "submission_ready": False, "review_submitted": False, "published": False, "platform_pricing_applied": False,
               "live_host_e2e": "not_assessed_by_builder",
-              "validation_note": "Build does not execute host tests; see the source VALIDATION_E2E_20261027 and VALIDATION_WORKBUDDY_20261027 reports.",
+              "validation_note": "Build does not execute host tests; see README.md for supported hosts.",
               "pending": pending}
     if author is not None or market_draft:
         metadata["author"] = author

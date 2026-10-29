@@ -1,78 +1,81 @@
 # 双会话执行 / Dual Session Exec
 
-把已批准的计划交给一个执行会话实现和自测，由原主会话协调、接管困难问题并独立验收。两侧的模型与思考强度可以分别选择，不绑定特定厂商或模型。
+**用强模型想，用轻模型干，省 token。**
 
-作者：[双会话工坊（Dual Session Workshop）](https://github.com/ChangyuZeng) · 许可：[MIT](LICENSE) · 版本：1.0.0（免费，无订阅）
+主会话用较强的模型做规划与验收，子会话用轻量模型（例如 Luna）做执行。贵的推理只花在需要判断的地方，大量读文件、改代码、跑测试的体力活交给便宜的模型。
 
-## 它解决什么
+MIT 许可 · 1.0.0 · 免费
 
-复杂任务里，同一个会话既要写实现，又要保留判断和验收，很容易糊在一起。这个 skill 把职责拆开：
-
-- **主会话**：规划、协调、接管、独立验收
-- **执行会话**：实现、自测、交回原始证据
-
-按宿主实际能力，自动走原生双会话、受管子代理，或生成用户中转消息。缺少工具时不会假装已经创建、发送或恢复。
-
-## 安装
-
-把整个 `dual-session-exec/` 目录放到目标 agent 的技能搜索目录，或让 agent 直接读取其中的 `SKILL.md`。保留 `references/` 与 `scripts/` 的相对位置。
-
-Codex 用户级示例：
+## 一键安装
 
 ```sh
-cp -R dual-session-exec ~/.agents/skills/dual-session-exec
+curl -fsSL https://raw.githubusercontent.com/ChangyuZeng/dual-session-exec/main/install.sh | sh
 ```
 
-也可使用项目级目录 `.agents/skills/dual-session-exec/`。位置依据 [Codex 技能说明](https://learn.chatgpt.com/docs/build-skills)。WorkBuddy 等其他宿主按其导入界面操作。
+默认装到 `~/.agents/skills/`，本机已有 `~/.codex/skills`、`~/.claude/skills`、`~/.workbuddy/skills` 时也会同步装上；同名旧目录会先自动备份。指定目录：
 
-可选脚本需要 Python 3.11+；状态锁和本地作业守护需要 macOS/Linux 等 POSIX 环境。无脚本环境仍可用用户中转协议。
+```sh
+curl -fsSL https://raw.githubusercontent.com/ChangyuZeng/dual-session-exec/main/install.sh | DSE_DIR=/path/to/skills sh
+```
+
+手动安装：下载 [Release](https://github.com/ChangyuZeng/dual-session-exec/releases) 里的 zip，把 `dual-session-exec/` 目录放进 agent 的技能目录；或者直接让 agent 读取 `dual-session-exec/SKILL.md`。
+
+**让 agent 自己装**：把这句话发给它即可。
+
+> 运行 `curl -fsSL https://raw.githubusercontent.com/ChangyuZeng/dual-session-exec/main/install.sh | sh` 安装 dual-session-exec 技能，然后读取它的 SKILL.md。
+
+## 职责分工
+
+| | 主会话（强模型） | 子会话（轻量模型，如 Luna） |
+|---|---|---|
+| 做什么 | 规划、冻结契约、协调、难题接管、独立验收 | 按契约实现、自测、交回原始证据 |
+| 不做什么 | 不亲自写大段实现 | 不改计划、不自我验收、不改主会话模型 |
+| 上下文 | 只看契约、差异和证据摘要 | 承担读代码、改文件、跑命令的长上下文 |
+
+## 为什么省 token
+
+1. **贵模型只干少量高价值的活。** 一个任务里，真正需要强推理的是拆解计划和判断对错；大部分 token 花在读文件、写代码、看日志上。这部分交给轻量模型，按更低的单价计费。
+2. **主会话上下文保持很短。** 子会话只回传「契约版本 + 差异 + 证据路径」，不把整段日志和代码塞回主会话，主会话每轮的输入 token 不会随任务越滚越大。
+3. **只传差异，不重复发全文。** 同一个执行身份持续复用，后续交接只发变化部分，避免反复重建上下文。
+4. **返工有上限。** 同一问题子会话最多返工一次，再失败就由主会话接管，不让轻模型在死循环里烧 token。
+
+**预期效果**：任务越长、执行部分越重，节省越明显，因为大头 token 从强模型挪到了轻模型上。具体省多少取决于你选的两侧模型价差和任务结构，本项目不承诺固定比例；技能会如实记录两侧的配置和可得的用量，方便你自己对比。
 
 ## 快速调用
 
 ```text
-使用双会话执行已批准的修复计划。主会话沿用当前模型和思考强度；请列出当前可用的执行模型与强度让我选择。使用普通模式，保留原预算、停止条件和独立验收。
+使用双会话执行刚才批准的计划。主会话用当前强模型负责规划和验收，子会话用 Luna 执行和自测。
 ```
 
-已决定型号时：
+不确定有哪些模型可选时：
 
 ```text
-主会话使用我指定的模型和强度，子会话使用我指定的另一组配置，执行刚才批准的计划。先核对宿主支持情况；不能切换时说明具体操作，不自动替换。
+使用双会话执行已批准的计划。主会话沿用当前模型；请列出可用的执行模型和强度让我选。
 ```
+
+宿主不支持自动开第二个会话时，技能会生成中转消息，由你在两个聊天之间转交，不会假装已经发送。
 
 ## 仓库结构
 
 | 路径 | 内容 |
 |---|---|
-| `dual-session-exec/` | 技能正文、宿主适配、协议与辅助脚本 |
-| `compat/luna-exec/` | 旧版 `luna-exec` 兼容入口 |
+| `dual-session-exec/` | 技能本体：SKILL.md、协议、宿主适配、辅助脚本 |
+| `install.sh` | 一键安装脚本 |
 | `tests/` | 单元测试 |
-| `tools/build_release.py` | 本地打包脚本 |
-| `docs/` | 商品说明与验证摘要 |
-| `publishing/` | 市场元数据与发行决定 |
+| `tools/build_release.py` | 打包脚本 |
+| `publishing/` | 市场元数据 |
 
-## 构建与测试
+## 运行要求
+
+任何能读取 SKILL.md 的 agent 都能用。可选脚本需要 Python 3.11+；状态锁和作业守护需要 macOS 或 Linux。已在 Codex 和 WorkBuddy（macOS）上实测。
+
+## 开发
 
 ```sh
 python3 -m unittest discover -s tests -p 'test_*.py'
-python3 tools/build_release.py --out dist/new-local-build
+python3 tools/build_release.py --out dist/build
 ```
-
-## 实测范围
-
-当前有限定实测：
-
-- Codex 原生双会话端到端
-- WorkBuddy 5.8.3 / 5.9.3 macOS 前台子代理闭环
-
-未声称覆盖：独立思考强度字段、命名后台路径、真实后端型号确认、云端与其他宿主。细节见 [COMPATIBILITY.md](COMPATIBILITY.md) 与 `docs/validation/`。
-
-## 不做什么
-
-- 不提供模型账号、充值、API 代理
-- 不自动更换当前轮次模型
-- 不代用户点击发布或提交审核
-- 不承诺固定节省比例或终身更新
 
 ## 反馈
 
-Issue 与讨论欢迎直接开在本仓库。WorkBuddy 市场反馈入口以上线后的平台为准。
+欢迎在本仓库开 Issue。

@@ -1,4 +1,0 @@
-interface:
-  display_name: "双会话执行（Luna 兼容入口）"
-  short_description: "主子会话分别选择模型和强度，新运行采用通用双会话协议"
-  default_prompt: "使用 $luna-exec 的通用双会话协议执行已批准计划，分别核对主子模型与思考强度，由执行侧自测、主会话独立验收；已有运行沿用原契约。"
